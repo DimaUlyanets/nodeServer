@@ -14,8 +14,6 @@ var port = process.env.PORT || 8081;
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017');
 
-var Card = require('./models/card');
-
 // ROUTES FOR OUR API
 // =============================================================================
 var router = express.Router();
@@ -31,30 +29,7 @@ router.get('/', function(req, res) {
    res.json({message: 'testing server'});
 });
 
-router.route('/cards')
-    .post(function(req, res) {
-        var card = new Card();
-        console.log('New card', req.body.question)
-        card.question = req.body.question;
-        card.answer = req.body.answer;
-
-        card.save(function(err) {
-            if(err) {
-                res.send(err);
-            }
-
-            res.json({message: 'Card created.'})
-        });
-    })
-    .get(function(req, res) {
-        Card.find(function(err, cards) {
-            if (err) {
-                res.send(err);
-            }
-            res.json(cards);
-        });
-    });
-
+require('./app/routes/cards')();
 
 app.use('/api', router);
 

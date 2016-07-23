@@ -28,5 +28,4 @@ module.exports = function (router) {
                 res.json(cards);
             });
         });
-
 };

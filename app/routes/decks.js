@@ -1,6 +1,7 @@
 var express = require('express');
 
-var Deck = require('./app/models/deck');
+var Deck = require('./../models/deck');
+
 module.exports = function (router) {
     'use strict';
 

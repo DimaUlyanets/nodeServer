@@ -29,7 +29,7 @@ router.get('/', function(req, res) {
    res.json({message: 'testing server'});
 });
 
-require('./app/routes/cards')();
+require('./app/routes/cards')(router);
 
 app.use('/api', router);
 

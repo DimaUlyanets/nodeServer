@@ -1,11 +1,11 @@
 var express = require('express');
 
-var Card = require('./app/models/card');
+var Card = require('./../models/card');
 
-module.exports = function () {
+module.exports = function (router) {
     'use strict';
-    
-    express.Router.route('/cards')
+
+    router.route('/cards')
         .post(function (req, res) {
             var card = new Card();
             console.log('New card', req.body.question)

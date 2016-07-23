@@ -30,6 +30,7 @@ router.get('/', function(req, res) {
 });
 
 require('./app/routes/cards')(router);
+require('./app/routes/decks')(router);
 
 app.use('/api', router);
 

@@ -27,4 +27,16 @@ module.exports = function (router) {
                 res.json(decks);
             });
         });
-}
+
+    router.route('/decks/:deck_id')
+        .delete(function (req, res) {
+            Deck.remove({
+                _id: req.params.deck_id
+            }, function(err, deck) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'Successfully deleted' });
+            });
+        })
+};

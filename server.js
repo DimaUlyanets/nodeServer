@@ -30,8 +30,9 @@ router.get('/', function(req, res) {
    res.json({message: 'testing server'});
 });
 
-require('./app/routes/cards')(router);
+
 require('./app/routes/decks')(router);
+require('./app/routes/cards')(router);
 
 app.use('/api', router);
 

@@ -5,12 +5,12 @@ var Card = require('./../models/card');
 module.exports = function (router) {
     'use strict';
 
-    router.route('/cards')
+    router.route('/decks/:deck_id/cards')
         .post(function (req, res) {
             var card = new Card();
-            console.log('New card', req.body.question)
             card.question = req.body.question;
             card.answer = req.body.answer;
+            card.deckId = req.params.deck_id;
 
             card.save(function (err) {
                 if (err) {
@@ -21,6 +21,7 @@ module.exports = function (router) {
             });
         })
         .get(function (req, res) {
+            console.log(req.params.deck_id);
             Card.find(function (err, cards) {
                 if (err) {
                     res.send(err);

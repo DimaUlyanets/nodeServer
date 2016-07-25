@@ -8,7 +8,6 @@ module.exports = function (router) {
     router.route('/decks')
         .post(function (req, res) {
             var deck = new Deck();
-            console.log('New deck', req.body.question)
             deck.name = req.body.name;
 
             deck.save(function (err) {

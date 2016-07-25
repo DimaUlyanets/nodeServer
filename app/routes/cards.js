@@ -21,8 +21,7 @@ module.exports = function (router) {
             });
         })
         .get(function (req, res) {
-            console.log(req.params.deck_id);
-            Card.find(function (err, cards) {
+            Card.find({deckId: req.params.deck_id}, function (err, cards) {
                 if (err) {
                     res.send(err);
                 }

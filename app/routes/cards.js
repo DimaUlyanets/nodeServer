@@ -28,4 +28,14 @@ module.exports = function (router) {
                 res.json(cards);
             });
         });
+
+    router.route('/decks/:deck_id/cards/:card_id/answer')
+        .post(function (req, res) {
+            var query = {'_id': req.params.deck_id};
+            Card.findOneAndUpdate(query, {right: req.body.right}, {upsert:true}, function(err, doc){
+                if (err) return res.send(500, { error: err });
+                return res.send("succesfully saved");
+            });
+            
+        });
 };

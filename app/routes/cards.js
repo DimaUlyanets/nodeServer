@@ -32,7 +32,8 @@ module.exports = function (router) {
                 if (err) {
                     res.send(err);
                 }
-                var cards =  req.params.practice
+                
+                var cards =  req.param('practice')
                     ? deck.cards.filter(function(card) {
                         if (card.bundle === 0)
                             return card;

@@ -1,6 +1,6 @@
 var express = require('express');
 
-var Deck = require('./../models/deck');
+var Deck = require('./../models/deckModel');
 
 module.exports = function (router) {
     'use strict';
@@ -19,7 +19,7 @@ module.exports = function (router) {
             });
         })
         .get(function (req, res) {
-            Deck.find(function (err, decks) {
+            Deck.find({}, 'name _id', function (err, decks) {
                 if (err) {
                     res.send(err);
                 }

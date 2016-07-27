@@ -5,7 +5,8 @@ var CardSchema = new Schema({
     question: String,
     answer: String,
     deckId: String,
-    right: Boolean
+    right: Boolean,
+    bundle: String
 });
 
 module.exports = mongoose.model('Card', CardSchema);

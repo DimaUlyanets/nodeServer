@@ -44,7 +44,7 @@ module.exports = function (router) {
                     res.send(err);
                 }
                 
-                var cards = req.param('practice')
+                var cards = req.params.practice
                     ? deck.cards.filter(function(card) {
                         var timeCardReady = moment(card.lastAnswerAt).add(bundles[card.bundle].period, 'seconds');
                         var cardIsReady = timeCardReady.isBefore(moment());

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Cards = require('./card').schema;
+var Cards = require('./cardModel').schema;
 
 var DeckSchema = new Schema({
     name: { type: String, required: true },

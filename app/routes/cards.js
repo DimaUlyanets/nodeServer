@@ -11,7 +11,6 @@ module.exports = function (router) {
             var card = {};
             card.question = req.body.question;
             card.answer = req.body.answer;
-
             Deck.findById(req.params.deck_id, function (err, deck) {
                 if (!err) {
                     deck.cards.push(card);
@@ -21,7 +20,7 @@ module.exports = function (router) {
                        }
                     });
 
-                }else {
+                } else {
                     res.send(err);
                 }
             });

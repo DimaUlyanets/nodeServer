@@ -1,9 +1,20 @@
 var express = require('express');
+var moment = require('moment');
 
 var Card = require('./../models/cardModel');
 var Deck = require('./../models/deckModel');
-var bundles = [0, 1, 2, 3, 4, 5, 6, 7];
 
+var bundles = [
+    {period:0, name: 'now', key:0},
+    {period:3600, name: '1 hour', key:1},
+    {period:14400, name: '4 hours', key:2},
+    {period:86400, name: '1 day', key:3},
+    {period:4, name: '3 days', key:4},
+    {period:5, name: '1 week', key:5},
+    {period:6, name: '3 weeks', key:6},
+    {period:7, name: '1.5 months', key:7}
+];
+console.log(moment().add(3600, 'seconds').format())
 module.exports = function (router) {
     'use strict';
 
@@ -35,7 +46,9 @@ module.exports = function (router) {
                 
                 var cards =  req.param('practice')
                     ? deck.cards.filter(function(card) {
-                        if (card.bundle === 0)
+                        var timeCardReady = moment(card.lastAnswerAt).add(bundles[card.bundle].period, 'seconds');
+                        var cardIsReady = timeCardReady.isBefore(moment());
+                        if (card.bundle === 0 || cardIsReady)
                             return card;
                     })
                     : deck.cards;
@@ -49,12 +62,13 @@ module.exports = function (router) {
 
             Deck.findById(req.params.deck_id, function(err, deck){
                 if (err) return res.send(500, { error: err });
-
+                var card = deck.cards.id(req.params.card_id);
                 if (req.body.right) {
-                    deck.cards.id(req.params.card_id).bundle = bundles[deck.cards.id(req.params.card_id).bundle + 1];//moving in next bundle
+                    card.bundle = bundles[card.bundle.key + 1].key;//moving in next bundle
                 } else {
-                    deck.cards.id(req.params.card_id).bundle = bundles[0]; //moving in first bundle
+                    card.bundle = bundles[0].key; //moving in first bundle
                 }
+                card.lastAnswerAt = moment();
                 deck.save(function (err) {
                     if (!err) {
                         res.json({message: 'Card answered.'})

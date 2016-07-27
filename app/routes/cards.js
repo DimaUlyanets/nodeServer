@@ -1,40 +1,52 @@
 var express = require('express');
 
 var Card = require('./../models/card');
+var Deck = require('./../models/deck');
 
 module.exports = function (router) {
     'use strict';
 
     router.route('/decks/:deck_id/cards')
         .post(function (req, res) {
-            var card = new Card();
+            var card = {};
             card.question = req.body.question;
             card.answer = req.body.answer;
-            card.deckId = req.params.deck_id;
 
-            card.save(function (err) {
-                if (err) {
+            Deck.findById(req.params.deck_id, function (err, deck) {
+                if (!err) {
+                    deck.cards.push(card);
+                    deck.save(function (err) {
+                       if (!err) {
+                           res.json({message: 'Card created.'})
+                       }
+                    });
+
+                }else {
                     res.send(err);
                 }
-
-                res.json({message: 'Card created.'})
             });
         })
         .get(function (req, res) {
-            Card.find({deckId: req.params.deck_id}, function (err, cards) {
+
+            Deck.findById(req.params.deck_id, function (err, deck) {
                 if (err) {
                     res.send(err);
                 }
-                res.json(cards);
+                res.json(deck.cards);
             });
         });
 
     router.route('/decks/:deck_id/cards/:card_id/answer')
         .post(function (req, res) {
-            var query = {'_id': req.params.card_id};
-            Card.findOneAndUpdate(query, {right: req.body.right}, {new: true}, function(err, doc){
+
+            Deck.findById(req.params.deck_id, function(err, deck){
                 if (err) return res.send(500, { error: err });
-                return res.send(JSON.stringify(doc));
+                deck.cards.id(req.params.card_id).right = req.body.right;
+                deck.save(function (err) {
+                    if (!err) {
+                        res.json({message: 'Card answered.'})
+                    }
+                });
             });
 
         });

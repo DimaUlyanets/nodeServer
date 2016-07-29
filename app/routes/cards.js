@@ -36,6 +36,7 @@ module.exports = function (router) {
                     res.send(err);
                 }
             });
+            res.end();
         })
         .get(function (req, res) {
 

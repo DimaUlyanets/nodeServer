@@ -6,7 +6,7 @@ var CardSchema = new Schema({
     question: { type: String, required: true },
     answer: { type: String, required: true },
     bundle: { type: Number, default: 0, required: true },
-    lastAnswerAt:  { type: Date, default: moment() }
+    lastAnswerAt:  { type: String, default: moment() }
 });
 
 module.exports = mongoose.model('Card', CardSchema);

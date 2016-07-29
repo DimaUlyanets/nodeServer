@@ -6,7 +6,7 @@ var Deck = require('./../models/deckModel');
 
 var bundles = [
     {period:0, name: 'now', key:0},
-    {period:3600, name: '1 hour', key:1},
+    {period:60, name: '1 hour', key:1},
     {period:14400, name: '4 hours', key:2},
     {period:86400, name: '1 day', key:3},
     {period:4, name: '3 days', key:4},
@@ -43,11 +43,11 @@ module.exports = function (router) {
                 if (err) {
                     res.send(err);
                 }
-                
-                var cards = req.params.practice
+                var cards = req.query.practice
                     ? deck.cards.filter(function(card) {
                         var timeCardReady = moment(card.lastAnswerAt).add(bundles[card.bundle].period, 'seconds');
                         var cardIsReady = timeCardReady.isBefore(moment());
+                    console.log('lastAnswer/ready/now', moment(card.lastAnswerAt).format(), timeCardReady.format(), moment().format());
                         if (card.bundle === 0 || cardIsReady)
                             return card;
                     })
@@ -64,7 +64,7 @@ module.exports = function (router) {
                 if (err) return res.send(500, { error: err });
                 var card = deck.cards.id(req.params.card_id);
                 if (req.body.right) {
-                    card.bundle = bundles[card.bundle.key + 1].key;//moving in next bundle
+                    card.bundle = bundles[card.bundle + 1].key;//moving in next bundle
                 } else {
                     card.bundle = bundles[0].key; //moving in first bundle
                 }

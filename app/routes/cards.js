@@ -14,7 +14,7 @@ var bundles = [
     {period:6, name: '3 weeks', key:6},
     {period:7, name: '1.5 months', key:7}
 ];
-console.log(moment().add(3600, 'seconds').format())
+
 module.exports = function (router) {
     'use strict';
 
